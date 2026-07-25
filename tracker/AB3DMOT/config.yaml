@@ -1,0 +1,75 @@
+dataset: nuScenes
+split: val
+
+paths:
+  # 输入 1：BEVFormer 导出的 results_nusc.json。
+  bevformer_json: /home/jushuo/Code/zz3-camouflage/result/train/04032103/results_nusc.json
+
+  # 输入 2：与这批样本对齐的 pkl。
+  # 有就填；没有也可以留空，然后按 json 里的 sample token 跑子集。
+  samples_info_pkl: '/home/jushuo/Code/zz4-bev/nuCarla/BEVFormer/data/nuscenes/s1-keyframe.pkl'
+
+  # 原始 nuScenes 数据根目录。
+  nuscenes_data_root: /home/jushuo/Code/zz4-bev/nuCarla/BEVFormer/data/nuscenes
+
+  # AB3DMOT 官方内部使用的 nuKITTI 中间目录。
+  nusc_kitti_root: /home/jushuo/Code/zz5-ab3dmot/AB3DMOT/data/nuScenes/nuKITTI
+
+  # 最终输出：只保留 car 的 tracking json。
+  output_json: ./result/output/s1-keyframe-after-attack.json
+
+  # 可视化输出目录。
+  visual_dir: ./result/visual/s1-keyframe-after-attack/
+
+  # 官方中间工作目录。
+  workspace_dir: ./result/workspace
+
+prepare:
+  # 为 true 时，即使不给 samples_info_pkl，也会按 json 里的 sample token 跑子集。
+  use_json_subset: true
+
+  # 子集来源：
+  # auto: 有 pkl 就优先按 pkl；否则按 json token。
+  # pkl: 强制按 samples_info_pkl。
+  # json: 强制只按 bevformer_json 里的 sample token。
+  subset_source: auto
+
+  # 输出已存在时是否覆盖。
+  overwrite_output: true
+
+tracking:
+  # 最终只输出这个类别。
+  category: Car
+
+  # 输入检测框分数过滤；null 表示不过滤。
+  input_detection_score_threshold: 0.3
+
+  overrides:
+    default:
+      # 轨迹消失后还能保留多少帧。
+      max_age: 2
+
+      # 轨迹至少命中多少次后才输出。
+      min_hits: 1
+
+      # 匹配阈值；不改就填 null。
+      match_threshold: null
+
+visual:
+  # 是否启用可视化。
+  enabled: true
+
+  # 单假设跟踪时保持 0。
+  hypo_index: 0
+
+  # 轨迹平均分过滤；null 表示不过滤。
+  min_score: null
+
+  # 是否导出 mp4 视频。
+  render_video: false
+
+  # 视频帧率。
+  framerate: 2
+
+  # 已有可视化结果时是否覆盖。
+  overwrite: true

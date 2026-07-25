@@ -1,0 +1,6 @@
+*.pth
+*.pt
+*.ckpt
+*.onnx
+ckpts/
+checkpoints/

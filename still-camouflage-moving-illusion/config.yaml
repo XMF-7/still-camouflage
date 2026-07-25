@@ -1,0 +1,242 @@
+dataset:
+  dataroot: 
+  image_dataroot: 
+  sequence_yaml_root: 
+  scenario_root:
+  val_image_source_subdir: 
+  image_source_subdir: 
+
+model: bevdet
+bevdet:
+  repo_root: 
+  preset: r50
+  config_path: ''
+  checkpoint_path: 
+  data_root:
+  workers_per_gpu: 0
+  key_camera: ''
+bevdepth:
+  repo_root: 
+  preset: r50-2key
+  config_module: ''
+  checkpoint_path: 
+  data_root: 
+  workers_per_gpu: 0
+  key_camera: ''
+  history_fill: repeat_oldest
+fastbev:
+  repo_root: 
+  preset: r50-cbgs
+  config_path: ''
+  checkpoint_path: 
+
+mesh:
+  obj_path: 
+sam2:
+  repo_root: 
+  checkpoint_path: 
+render:
+  near_plane_m: 0.1
+camouflage:
+  resolution:
+  - 1024
+  - 1024
+  init_mode: constant
+  init_rgb:
+  - 128
+  - 128
+  - 128
+  init_image: ''
+  alpha: 1.0
+  projection_view:
+    mode: real
+    grouped_view_json: 
+  eot:
+    enabled: true
+    geometry3d_prob: 0.5
+    yaw_perturb_deg: 2.0
+    translate_front_m: 0.1
+    translate_left_m: 0.1
+    translate_up_m: 0.1
+    depth_ratio: 0.1
+    scale_ratio_3d: 0.1
+    geometry_prob: 0
+    translate_px:
+    - 1
+    - 1
+    scale_delta: 0.02
+    rotate_deg: 0.2
+    visible_region_prob: 0
+    mask_erode_px: 0
+    mask_dilate_px: 0
+    occ_prob: 0
+    occ_max_frac: 0
+    region_drop_prob: 0
+    region_drop_max_frac: 0
+    photo_prob: 0
+    brightness: 0.1
+    contrast: 0
+    saturation: 0
+    noise_prob: 0
+    noise_std: 0.01
+  image_augmentation:
+    enabled: true
+    photometric_prob: 0.5
+    brightness: 0.2
+    contrast: 0.1
+    saturation: 0.1
+    gamma: 0.1
+    color_shift: 0.05
+    noise_prob: 0.1
+    noise_std: 0.005
+    background_noise_prob: 0.8
+    background_noise_std: 0.05
+    apply_to_clean_views: false
+    background_noise_without_mask: false
+    blur_prob: 0.1
+    blur_kernel: 3
+    blur_sigma: 0.8
+fixed_query:
+  conf_threshold: 0.5
+  max_center_dist_m: 3.0
+  distance_axis: lateral_y
+  max_cross_axis_dist_m: 1.0
+  export_fixed_query_results: true
+  initial_query_check: true
+  fail_on_initial_query_mismatch: true
+  cost_center_xy_weight: 1.0
+  cost_confidence_weight: 0.5
+  fail_on_query_mismatch: false
+optimal:
+  step_size_m: 0.2
+  step_loss_type: l2
+  axis: directed
+  direction:
+    front_back_pct: 10
+    left_right_pct: 90
+loss:
+  by_model:
+    bevdet:
+      move:
+        weight: 8.0
+        loss_type: l2
+      progress:
+        weight: 5.0
+        lambda: 1.0
+        first_frame_min: 0.2
+        first_frame_min_m: 0.2
+        per_frame_min: 0.2
+        per_frame_min_m: 0.3
+      rigid:
+        weight: 1.0
+        loss_type: l2
+        size_weight: 1
+        yaw_weight: 2
+      cls:
+        weight: 1.0
+        pos_weight: 1.0
+        neg_weight: 1.0
+        rank_weight: 1.0
+        rank_margin: 0.5
+        global_rank_weight: 0.5
+        global_rank_margin: 0.3
+      style:
+        weight: 2.5
+        tv_weight: 6
+        nps_weight: 2
+        printable_palette: default_nuscenes
+    bevdepth:
+      move:
+        weight: 8.0
+        loss_type: l2
+      progress:
+        weight: 5.0
+        lambda: 1.0
+        first_frame_min: 0.2
+        first_frame_min_m: 0.2
+        per_frame_min: 0.2
+        per_frame_min_m: 0.3
+      rigid:
+        weight: 0.3
+        loss_type: l2
+        size_weight: 1
+        yaw_weight: 2
+      cls:
+        weight: 1.0
+        pos_weight: 1.0
+        neg_weight: 1.0
+        rank_weight: 1.0
+        rank_margin: 0.5
+        global_rank_weight: 0.5
+        global_rank_margin: 0.3
+      style:
+        weight: 0.5
+        tv_weight: 6
+        nps_weight: 2
+        printable_palette: default_nuscenes
+    fastbev:
+      move:
+        weight: 8.0
+        loss_type: l2
+      progress:
+        weight: 5.0
+        lambda: 1.0
+        first_frame_min: 0.2
+        first_frame_min_m: 0.2
+        per_frame_min: 0.2
+        per_frame_min_m: 0.3
+      rigid:
+        weight: 0.3
+        loss_type: l2
+        size_weight: 1
+        yaw_weight: 2
+      cls:
+        weight: 1.0
+        pos_weight: 1.0
+        neg_weight: 1.0
+        rank_weight: 1.0
+        rank_margin: 0.5
+        global_rank_weight: 0.5
+        global_rank_margin: 0.3
+      style:
+        weight: 0.5
+        tv_weight: 6
+        nps_weight: 2
+        printable_palette: default_nuscenes
+train:
+  clean_run: false
+  output_dir: 
+  output_dir_naming: time
+  precompute_cache_enabled: true
+  precompute_cache_root: 
+  loss_reference: clean
+  precompute_python:
+  device: cuda
+  seed: 42
+  steps: 3000
+  optimizer: adam
+  lr: 0.01
+  lr_decay_every: 100
+  lr_decay_amount: 0.0001
+  lr_min: 0.0001
+  pgd_epsilon: 1.0
+  grad_clip_norm: 0
+  weight_decay: 0.0
+  log_every: 50
+  batch_mode: subset
+  train_samples_per_step: 2
+  checkpoint_every: 50
+  train_eval_every: 50
+  val_eval_every: 50
+  val_log_every: 50
+  plot_every: 50
+  val_use_eot: false
+  backward_chunk_size: 0
+  use_amp: true
+  amp_dtype: fp16
+  cudnn_benchmark: false
+  allow_tf32: false
+  preload_clean_images_to_device: true
+  auxiliary_models: []
+official_visual:
+  score_threshold: 0.5

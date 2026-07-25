@@ -1,0 +1,78 @@
+paths:
+  nuscenes_root: /home/jushuo/Code/zz4-bev/nuCarla/BEVFormer/data/nuscenes/
+  tracking_results_path: /home/jushuo/Code/zz5-ab3dmot/AB3DMOT/result/output/s1-keyframe-after-attack.json
+  prediction_results_path: /home/jushuo/Code/zz6.1-hivt/output/predictions.json
+
+run:
+  mode: scene_all
+  frame_token: fcd522474ba34412acebe1a90a7ab181
+  frame_filter: tracking_or_prediction
+  skip_missing_cam_front_image: true
+  output_path: /home/jushuo/Code/zz7-planning/output/s1-keyframe-after-attack.json
+  output_dir: /home/jushuo/Code/zz7-planning/output/frames/s1-keyframe-after-attack/
+  visualization_dir: /home/jushuo/Code/zz7-planning/visual/frames/s1-keyframe-after-attack/
+  auto_make_bev_video: true
+  bev_video_path: /home/jushuo/Code/zz7-planning/visual/frames/s1-keyframe-after-attack/scene_bev.mp4
+  bev_video_fps: 2.0
+  auto_make_cam_video: true
+  cam_video_path: /home/jushuo/Code/zz7-planning/visual/frames/s1-keyframe-after-attack/scene_cam.mp4
+  cam_video_fps: 2.0
+
+planner:
+  target_speed: 8.0
+  max_road_width: 4.0
+  d_road_w: 0.5
+  robot_radius: 1.5
+  max_speed: 13.88888888888889
+  max_accel: 5.0
+  max_curvature: 1.0
+  dt: 0.25
+  max_t: 6.0
+  min_t: 5.0
+  n_s_sample: 1
+  k_j: 0.1
+  k_t: 0.1
+  k_s_dot: 1.0
+  k_d: 1.0
+  k_s: 1.0
+  k_lat: 1.0
+  k_lon: 1.0
+
+adapter:
+  route_length_m: 80.0
+  route_resolution_m: 1.0
+  closest_lane_radius_m: 20.0
+  include_tracking_boxes: true
+  tracking_box_scale: 1.0
+  include_prediction_points: true
+  prediction_mode: aligned
+  prediction_step_stride: 1
+  prediction_source_dt: 0.5
+  align_prediction_to_planner_dt: true
+
+visualization:
+  enabled: true
+  bev_output_path: /home/jushuo/Code/zz7-planning/visual/nuscenes_fot_demo_bev.png
+  cam_front_output_path: /home/jushuo/Code/zz7-planning/visual/nuscenes_fot_demo_cam_front.png
+  bev_width_px: 1000
+  bev_height_px: 1000
+  bev_forward_m: 25.0
+  bev_backward_m: 15.0
+  bev_left_m: 15.0
+  bev_right_m: 15.0
+  trajectory_dot_radius_px: 4
+  reference_dot_radius_px: 2
+  obstacle_dot_radius_px: 3
+  tracking_box_line_width_px: 4
+  prediction_line_width_px: 2
+  map_line_width_px: 3
+  prediction_dot_radius_px: 2
+  prediction_match_max_distance_m: 8.0
+  info_font_size: 24
+  draw_reference_path: true
+  draw_obstacles: false
+  draw_tracking_boxes: true
+  draw_prediction_trajectories: true
+  draw_map: true
+  draw_ego: true
+  map_padding_m: 10.0

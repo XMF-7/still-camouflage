@@ -1,0 +1,38 @@
+paths:
+  nuscenes_root: /home/jushuo/Code/zz4-bev/nuCarla/BEVFormer/data/nuscenes
+  tracking_json: /home/jushuo/Code/zz5-ab3dmot/AB3DMOT/result/output/s1-keyframe-after-attack.json
+  hivt_repo_root: /home/jushuo/Code/zz6.1-hivt/HiVT
+  hivt_ckpt_path: /home/jushuo/Code/zz6.1-hivt/HiVT/checkpoints/HiVT-128/checkpoints/epoch=63-step=411903.ckpt
+  output_dir: /home/jushuo/Code/zz6.1-hivt/output
+
+run:
+  scene_names: []
+  max_frames: null
+
+prediction:
+  backend: hivt # hivt / cv / ctrv / covernet / mtp
+  device: cpu
+  pred_steps: 8 # 预测未来 4.0 秒
+  dt: 0.5 # 预测时间步长（秒），2Hz（nuScenes keyframe）
+  history_seconds: 2.0 # 预测时使用的历史轨迹长度（秒）
+  use_hivt_if_available: true
+  fallback_mode: none # none / cv / ctrv
+  num_modes: 6
+  ctrv_min_yaw_rate: 0.001
+
+  # CoverNet (需提供模型权重 + lattice)
+  covernet_model_path: ""
+  covernet_lattice_path: ""
+  covernet_devkit_root: /home/jushuo/Code/zz6-trajectron/Trajectron-plus-plus/experiments/nuScenes/devkit/python-sdk
+  covernet_backbone: resnet50
+  covernet_input_shape: [3, 500, 500]
+  covernet_source_dt: 0.5
+
+  # MTP (需提供模型权重)
+  mtp_model_path: ""
+  mtp_devkit_root: /home/jushuo/Code/zz6-trajectron/Trajectron-plus-plus/experiments/nuScenes/devkit/python-sdk
+  mtp_backbone: resnet50
+  mtp_num_modes: 6
+  mtp_seconds: 6.0
+  mtp_frequency_hz: 2.0
+  mtp_input_shape: [3, 500, 500]

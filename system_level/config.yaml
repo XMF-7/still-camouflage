@@ -1,0 +1,35 @@
+nuscenes:
+  dataroot: /home/jushuo/Code/zz0.2-nuScenes
+  version: v1.0-trainval
+
+planning:
+  horizon_s: 8.0
+  planned_trajectory_sample_interval: 0.5
+  mpc:
+    repo_root: /home/jushuo/Code/still-camouflage/planner/FOT
+    desired_speed_mps: 10.0
+    free_drive_desired_speed_mps: 10.0
+    max_speed_mps: 16.0
+    max_accel_mps2: 2.5
+    max_decel_mps2: 9.0
+    safe_distance_m: 7.0
+    prediction_lateral_gate_m: 1.8
+    prediction_s_min_m: 0.0
+    prediction_weight: 400.0
+    speed_weight: 2.0
+    accel_weight: 0.2
+    jerk_weight: 0.4
+    grad_iters: 100
+    grad_lr: 0.08
+    finite_diff_eps: 0.05
+  fot:
+    repo_root: /home/jushuo/Code/still-camouflage/planner/FOT
+    include_tracking_boxes: false
+    include_prediction_points: true
+    prediction_lateral_gate_m: 1.8
+    prediction_s_min_m: 0.0
+    lateral_mode: low_speed
+    longitudinal_mode: velocity_keeping
+    prediction_stop_mode: dynamic
+    force_emergency_brake_on_no_solution: false
+
